@@ -1,7 +1,5 @@
 import torch
-import textwrap
 import streamlit as st
-from PIL import Image
 from transformers import GPT2LMHeadModel
 from transformers import GPT2Tokenizer
 import base64
@@ -21,10 +19,10 @@ def add_bg_from_local(image_file):
     unsafe_allow_html=True
     )
 
-add_bg_from_local('0fFW6hj.jpg')
+add_bg_from_local('./0fFW6hj.jpg')
 
 tokenizer = GPT2Tokenizer.from_pretrained('sberbank-ai/rugpt3small_based_on_gpt2')
-path_model = '/home/anna/Astrologer/models/gpt2_model_new.pt'
+path_model = './models/gpt2_model_new.pt'
 model = GPT2LMHeadModel.from_pretrained(
     'sberbank-ai/rugpt3small_based_on_gpt2',
     output_attentions = False,
@@ -34,11 +32,9 @@ model.load_state_dict(torch.load(path_model, map_location=torch.device('cpu')))
 
 original_title = '<p style="font-family:sans-serif; color:White; font-size: 30px;"> <b>Astrologer 🔮</b> </p>'
 st.markdown(original_title, unsafe_allow_html=True)
-# st.header('Astrologer 🔮')
 text_includ = '<p style="font-family:sans-serif; color:White; font-size: 18px; background-color: #764ce0"> <span class="bolded">Astrologer</span> - приложение, для генерации гороскопа.\n Просто напишите свой знак зодиака ниже и приложение выдаст вам ваш прогноз на сегодня 🪄</p>'
 st.markdown(text_includ, unsafe_allow_html=True)
 
-# image = Image.open('zodiac-sign-facts.jpg')
 
 prompt = 'Рыбы'
 text_w1 = ':blue[**Ваш знак зодиака:**]'
@@ -58,4 +54,3 @@ out = model.generate(
 
 text_decode = tokenizer.decode(out[0])
 txt = st.text_area(':blue[**Ваш прогноз на сегодня 🔮:**]', text_decode, height=200)
-# st.write('Sentiment:', run_sentiment_analysis(txt))
